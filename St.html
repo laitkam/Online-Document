@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apply Online Documents</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-sans">
+  <div class="max-w-xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+    <h1 class="text-xl font-bold mb-4 text-center">Schedule Tribe Application</h1>
+
+    <div id="formContainer">
+      <form id="mainForm" action="https://formspree.io/f/yourFormID" method="POST" enctype="multipart/form-data">
+        <label class="block mb-2">Name:
+          <input type="text" name="name" required class="w-full border rounded px-3 py-2 mt-1">
+        </label>
+
+        <label class="block mb-2">Date of Birth:
+          <input type="date" name="dob" required class="w-full border rounded px-3 py-2 mt-1">
+        </label>
+
+        <label class="block mb-2">Sex:
+          <select name="sex" required class="w-full border rounded px-3 py-2 mt-1">
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+
+        <label class="block mb-2">Father's Name:
+          <input type="text" name="father_name" required class="w-full border rounded px-3 py-2 mt-1">
+        </label>
+
+        <label class="block mb-2">Mother's Name:
+          <input type="text" name="mother_name" required class="w-full border rounded px-3 py-2 mt-1">
+        </label>
+
+        <label class="block mb-2">Phone Number:
+          <input type="tel" name="phone" required class="w-full border rounded px-3 py-2 mt-1">
+        </label>
+
+        <div class="mt-4">
+          <label class="block">Passport Photo:
+            <input type="file" name="passport_photo" accept="image/*" required class="w-full mt-1">
+          </label>
+          <label class="block mt-2">Birth Certificate:
+            <input type="file" name="birth_certificate" accept="image/*" required class="w-full mt-1">
+          </label>
+          <label class="block mt-2">Village Residential Headman:
+            <input type="file" name="village_headman" accept="image/*" required class="w-full mt-1">
+          </label>
+          <label class="block mt-2">Parents Epic Voter ID:
+            <input type="file" name="parents_epic" accept="image/*" required class="w-full mt-1">
+          </label>
+          <label class="block mt-2">Parents Schedule Tribe Certificate:
+            <input type="file" name="parents_st" accept="image/*" required class="w-full mt-1">
+          </label>
+        </div>
+
+        <button type="button" onclick="payAndSubmit()" class="bg-green-600 text-white px-4 py-2 rounded mt-6 w-full">
+          Pay ₹150 & Submit
+        </button>
+      </form>
+    </div>
+
+    <div id="thankYouMessage" style="display:none;" class="text-center mt-6 text-green-700 font-semibold">
+      ✅ Form Submitted, thank you.<br>
+      For further assistance contact our team: <a href="tel:9862189403" class="underline text-blue-700">9862189403</a>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="https://wa.me/91896189403" target="_blank" class="text-green-700 underline">💬 Need Help? Chat on WhatsApp</a>
+    </div>
+  </div>
+
+  <script>
+    function isFormValid() {
+      const form = document.getElementById("mainForm");
+      return form.checkValidity();
+    }
+
+    function payAndSubmit() {
+      if (!isFormValid()) {
+        alert("Please fill in all required fields before proceeding to payment.");
+        return;
+      }
+
+      const options = {
+        key: "rzp_live_90jFdMHiP0Rtcz",
+        amount: 15000,
+        currency: "INR",
+        name: "ST Application",
+        description: "Schedule Tribe Certificate Fee",
+        handler: function (response) {
+          document.getElementById("mainForm").submit();
+          document.getElementById("formContainer").style.display = "none";
+          document.getElementById("thankYouMessage").style.display = "block";
+
+          // Optional SMS/WhatsApp logic (external backend/API needed for actual SMS)
+        },
+        theme: {
+          color: "#4CAF50"
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    }
+  </script>
+</body>
+</html>
