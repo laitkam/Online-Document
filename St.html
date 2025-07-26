@@ -2,17 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Apply Online Documents</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Schedule Tribe Application</title>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+  <script>
+    UPLOADCARE_PUBLIC_KEY = '8e4b55a12a698dc8ade4';
+  </script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50 font-sans">
   <div class="max-w-xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
     <h1 class="text-xl font-bold mb-4 text-center">Schedule Tribe Application</h1>
-
+    
     <div id="formContainer">
-      <form id="mainForm" action="https://formspree.io/f/yourFormID" method="POST" enctype="multipart/form-data">
+      <form id="mainForm" action="https://formspree.io/f/xzzvryge" method="POST">
         <label class="block mb-2">Name:
           <input type="text" name="name" required class="w-full border rounded px-3 py-2 mt-1">
         </label>
@@ -44,23 +48,23 @@
 
         <div class="mt-4">
           <label class="block">Passport Photo:
-            <input type="file" name="passport_photo" accept="image/*" required class="w-full mt-1">
+            <input type="hidden" role="uploadcare-uploader" name="passport_photo" data-clearable />
           </label>
           <label class="block mt-2">Birth Certificate:
-            <input type="file" name="birth_certificate" accept="image/*" required class="w-full mt-1">
+            <input type="hidden" role="uploadcare-uploader" name="birth_certificate" data-clearable />
           </label>
-          <label class="block mt-2">Village Residential Headman:
-            <input type="file" name="village_headman" accept="image/*" required class="w-full mt-1">
+          <label class="block mt-2">Village Headman Certificate:
+            <input type="hidden" role="uploadcare-uploader" name="village_headman" data-clearable />
           </label>
-          <label class="block mt-2">Parents Epic Voter ID:
-            <input type="file" name="parents_epic" accept="image/*" required class="w-full mt-1">
+          <label class="block mt-2">Parents Voter ID:
+            <input type="hidden" role="uploadcare-uploader" name="parents_epic" data-clearable />
           </label>
           <label class="block mt-2">Parents Schedule Tribe Certificate:
-            <input type="file" name="parents_st" accept="image/*" required class="w-full mt-1">
+            <input type="hidden" role="uploadcare-uploader" name="parents_st" data-clearable />
           </label>
         </div>
 
-        <button type="button" onclick="payAndSubmit()" class="bg-green-600 text-white px-4 py-2 rounded mt-6 w-full">
+        <button type="button" onclick="validateAndPay()" class="bg-green-600 text-white px-4 py-2 rounded mt-6 w-full">
           Pay ₹150 & Submit
         </button>
       </form>
@@ -77,32 +81,39 @@
   </div>
 
   <script>
-    function isFormValid() {
+    function validateAndPay() {
       const form = document.getElementById("mainForm");
-      return form.checkValidity();
-    }
+      const requiredFields = ["name", "dob", "sex", "father_name", "mother_name", "phone"];
+      let valid = true;
 
-    function payAndSubmit() {
-      if (!isFormValid()) {
-        alert("Please fill in all required fields before proceeding to payment.");
+      requiredFields.forEach(name => {
+        const field = form.elements[name];
+        if (!field.value.trim()) {
+          field.classList.add("border-red-500");
+          valid = false;
+        } else {
+          field.classList.remove("border-red-500");
+        }
+      });
+
+      if (!valid) {
+        alert("Please fill in all required fields.");
         return;
       }
 
       const options = {
-        key: "rzp_live_90jFdMHiP0Rtcz",
-        amount: 15000,
-        currency: "INR",
-        name: "ST Application",
-        description: "Schedule Tribe Certificate Fee",
-        handler: function (response) {
-          document.getElementById("mainForm").submit();
+        "key": "rzp_live_90jFdMHiP0Rtcz",
+        "amount": 15000,
+        "currency": "INR",
+        "name": "ST Application",
+        "description": "Schedule Tribe Certificate Fee",
+        "handler": function (response) {
+          form.submit();
           document.getElementById("formContainer").style.display = "none";
           document.getElementById("thankYouMessage").style.display = "block";
-
-          // Optional SMS/WhatsApp logic (external backend/API needed for actual SMS)
         },
-        theme: {
-          color: "#4CAF50"
+        "theme": {
+          "color": "#4CAF50"
         }
       };
 
