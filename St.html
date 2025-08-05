@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Schedule Tribe Application</title>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
   <script>
     UPLOADCARE_PUBLIC_KEY = '8e4b55a12a698dc8ade4';
@@ -67,9 +66,11 @@
           </label>
         </div>
 
-        <button type="button" onclick="validateAndPay()" class="bg-green-600 text-white px-4 py-2 rounded mt-6 w-full">
-          Pay ₹300 & Submit
-        </button>
+        <div class="mt-6">
+          <a href="payment.html" class="w-full block bg-yellow-500 hover:bg-yellow-600 text-white font-bold px-4 py-2 rounded text-center">
+            Proceed to Payment
+          </a>
+        </div>
       </form>
     </div>
 
@@ -83,49 +84,8 @@
     </div>
   </div>
 
-  <script>
-    function validateAndPay() {
-      const form = document.getElementById("mainForm");
-      const requiredFields = ["name", "dob", "sex", "father_name", "mother_name", "phone"];
-      let valid = true;
-
-      requiredFields.forEach(name => {
-        const field = form.elements[name];
-        if (!field.value.trim()) {
-          field.classList.add("border-red-500");
-          valid = false;
-        } else {
-          field.classList.remove("border-red-500");
-        }
-      });
-
-      if (!valid) {
-        alert("Please fill in all required fields.");
-        return;
-      }
-
-      const options = {
-        "key": "rzp_live_90jFdMHiP0Rtcz",
-        "amount": 30000,
-        "currency": "INR",
-        "name": "ST Application",
-        "description": "Schedule Tribe Certificate Fee",
-        "handler": function (response) {
-          form.submit();
-          document.getElementById("formContainer").style.display = "none";
-          document.getElementById("thankYouMessage").style.display = "block";
-        },
-        "theme": {
-          "color": "#4CAF50"
-        }
-      };
-
-      const rzp = new Razorpay(options);
-      rzp.open();
-    }
-  </script>
   <div class="text-center mt-4">
-  <a href="index.html" class="inline-block bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded">⬅️ Back to Home</a>
-</div>
+    <a href="index.html" class="inline-block bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded">⬅️ Back to Home</a>
+  </div>
 </body>
 </html>
