@@ -33,17 +33,43 @@
         <label class="block font-semibold">Name:
           <input type="text" name="name" required class="w-full border rounded px-3 py-2 mt-1 focus:ring-2 focus:ring-green-300">
         </label>
-        <label class="block font-semibold">Date of Birth:
-          <input 
-            id="dob"
-            type="text"
-            name="dob"
-            required
-            class="w-full border rounded px-3 py-2 mt-1 focus:ring-2 focus:ring-green-300 appearance-none"
-            placeholder="Select date"
-            readonly
-          >
-        </label>
+        <label class="block font-semibold">Date of Birth:</label>
+        <div class="flex gap-2 mb-2">
+          <select id="dob-day" name="dob_day" required class="border rounded px-2 py-2 focus:ring-2 focus:ring-green-300">
+            <option value="">Day</option>
+            <!-- Days 1-31 -->
+            <script>
+              for(let i=1;i<=31;i++){
+                document.write(`<option value="${i}">${i}</option>`);
+              }
+            </script>
+          </select>
+          <select id="dob-month" name="dob_month" required class="border rounded px-2 py-2 focus:ring-2 focus:ring-green-300">
+            <option value="">Month</option>
+            <option value="1">Jan</option>
+            <option value="2">Feb</option>
+            <option value="3">Mar</option>
+            <option value="4">Apr</option>
+            <option value="5">May</option>
+            <option value="6">Jun</option>
+            <option value="7">Jul</option>
+            <option value="8">Aug</option>
+            <option value="9">Sep</option>
+            <option value="10">Oct</option>
+            <option value="11">Nov</option>
+            <option value="12">Dec</option>
+          </select>
+          <select id="dob-year" name="dob_year" required class="border rounded px-2 py-2 focus:ring-2 focus:ring-green-300">
+            <option value="">Year</option>
+            <script>
+              let thisYear = new Date().getFullYear();
+              for(let y=thisYear; y>=1900; y--){
+                document.write(`<option value="${y}">${y}</option>`);
+              }
+            </script>
+          </select>
+        </div>
+        <input type="hidden" id="dob" name="dob" required>
         <label class="block font-semibold">Sex:
           <select name="sex" required class="w-full border rounded px-3 py-2 mt-1 focus:ring-2 focus:ring-green-300">
             <option value="">Select</option>
@@ -123,6 +149,17 @@
     });
 
     document.getElementById('mainForm').addEventListener('submit', function(e) {
+      var day = document.getElementById('dob-day').value;
+      var month = document.getElementById('dob-month').value;
+      var year = document.getElementById('dob-year').value;
+      var dobInput = document.getElementById('dob');
+      if(day && month && year) {
+        dobInput.value = `${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}`;
+      } else {
+        alert('Please select complete Date of Birth.');
+        e.preventDefault();
+        return false;
+      }
       // List all required uploadcare input names here
       const requiredUploads = [
         'passport_photo',
