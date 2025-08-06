@@ -114,10 +114,13 @@
             </label>
           </div>
         </div>
-        <div class="mt-6">
+        <div class="mt-6 relative">
           <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-blue-600 hover:to-green-600 text-white font-bold px-4 py-2 rounded-full shadow-lg text-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-400">
             Submit Application
           </button>
+          <div id="loadingSpinner" class="absolute inset-0 flex items-center justify-center bg-white/50 rounded-full hidden">
+            <div class="w-8 h-8 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
         </div>
       </form>
       <div id="thankYouMessage" style="display:none;" class="text-center mt-6 text-green-700 font-semibold">
@@ -176,7 +179,16 @@
       if (missing.length > 0) {
         alert('Please upload the following documents before submitting:\n\n' + missing.join('\n'));
         e.preventDefault();
+      } else {
+        // Show loading spinner
+        document.getElementById('loadingSpinner').classList.remove('hidden');
       }
+    });
+
+    // Hide loading spinner when form submission completes
+    document.getElementById('mainForm').addEventListener('formdata', function() {
+      document.getElementById('loadingSpinner').classList.add('hidden');
+      document.getElementById('thankYouMessage').style.display = 'block';
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
