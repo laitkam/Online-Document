@@ -69,7 +69,7 @@
             </script>
           </select>
         </div>
-        <label class="block font-semibold">Sex:
+        <label class="block font-semibold">Gender:
           <select name="sex" required class="w-full border rounded px-3 py-2 mt-1 focus:ring-2 focus:ring-green-300">
             <option value="">Select</option>
             <option value="Male">Male</option>
@@ -77,13 +77,22 @@
             <option value="Other">Other</option>
           </select>
         </label>
-        <label class="block font-semibold">Father's Name:
-          <input type="text" name="father_name" required class="w-full border rounded px-3 py-2 mt-1 focus:ring-2 focus:ring-green-300">
-        </label>
-        <label class="block font-semibold">Mother's Name:
-          <input type="text" name="mother_name" required class="w-full border rounded px-3 py-2 mt-1 focus:ring-2 focus:ring-green-300">
-        </label>
+         <label class="block font-semibold">Tribe:
+  <select name="tribe" id="tribeSelect" required class="w-full border rounded px-3 py-2 mt-1 focus:ring-2 focus:ring-green-300">
+    <option value="">Select Tribe</option>
+    <option value="Khasi">Khasi</option>
+    <option value="Jaintia">Jaintia</option>
+    <option value="Garo">Garo</option>
+    <option value="Other">Other</option>
+  </select>
+</label>
+
+<!-- Hidden input to appear when 'Other' is selected -->
+<div id="otherTribeWrapper" class="mt-2 hidden">
+  <input type="text" name="tribe_other" placeholder="Please specify your tribe" class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-green-300" />
+</div>
         <label class="block font-semibold">Phone Number:
+
           <input type="tel" name="phone" required class="w-full border rounded px-3 py-2 mt-1 focus:ring-2 focus:ring-green-300">
         </label>
         <div class="mt-4 space-y-3">
@@ -199,5 +208,16 @@
       disableMobile: false // true = always use flatpickr, false = use native on mobile (scroll wheel)
     });
   </script>
+  <script>
+  document.getElementById('tribeSelect').addEventListener('change', function () {
+    const otherWrapper = document.getElementById('otherTribeWrapper');
+    if (this.value === 'Other') {
+      otherWrapper.classList.remove('hidden');
+    } else {
+      otherWrapper.classList.add('hidden');
+    }
+  });
+</script>
+
 </body>
 </html>
